@@ -12,10 +12,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed to initialize database: %v", err)
 	}
-	// Initialize HTTP server
 	srv := server.NewServer()
-
-	// Set up routes
 	srv.SetupRoutes()
 
 	// Start HTTP server
