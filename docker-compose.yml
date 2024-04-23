@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  chatbot-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./data:/app/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl --fail http://localhost:8080/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  rasa-server:
+    build:
+      context: .
+      dockerfile: rasa.Dockerfile
+    ports:
+      - "5005:5005"
+    volumes:
+      - ./rasa:/app/rasa
+    healthcheck:
+      test: ["CMD-SHELL", "curl --fail http://localhost:5005/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
